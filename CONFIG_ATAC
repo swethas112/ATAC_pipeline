@@ -1,0 +1,69 @@
+THREADS=12;
+ulimit -c unlimited
+
+ProjDir="/path/to/projectDirectory"
+rawData="/path/to/rawData"
+tempDir="/path/to/temporary/files"
+toolsDir="/path/to/software"
+
+## Genome
+genomeDir="/path/to/reference"
+genome="${genomeDir}/mm10.fa"
+blacklist="${genomeDir}/blacklists/mm10.blacklist.bed"
+chipAtlas="Oth.ALL.10.AllAg.AllCell_mm10.bed"
+motifs="JASPAR2024_CORE_vertebrates_non-redundant_pfms_jaspar.txt"
+
+## Software
+FASTQC="fastqc -t 12 --extract "
+TRIM="trim_galore --length 20 --paired --gzip --cores 12 "
+MAP="bowtie2 -p 12 "
+
+# SAMTOOLS
+SAMTOOLS="samtools"
+SAMVIEW="${SAMTOOLS} view "
+SAMSORT="${SAMTOOLS} sort "
+SAMINDEX="${SAMTOOLS} index "
+SAMMERGE="${SAMTOOLS} merge "
+STATS="${SAMTOOLS} stats "
+
+# PICARD MarkDuplicates
+PICARD="java -Xmx8g -jar ${toolsDir}/picard.jar MarkDuplicates REMOVE_DUPLICATES=true ASSUME_SORTED=true "
+
+# COVERAGE
+COVERAGE="bamCoverage --normalizeUsing RPKM --effectiveGenomeSize 2652783500 -p 12 "
+
+# RScript
+RScript="Rscript"
+
+# Bedtools
+BEDTOOLS="bedtools intersect "
+MERGE="bedtools merge "
+
+# MACS2
+MACS2="/home/ssubramanian/.conda/envs/test/bin/macs2 callpeak "
+
+# awk
+AWK='($7 >= 10 && $8 >= 4) { print $0 }'
+
+# Sort
+SORT="sort -k1,1 -k2,2n"
+
+# TAIL
+TAIL="tail -n +26"
+
+# Compute matrix
+COMPUTEMATRIX="computeMatrix reference-point --referencePoint center --missingDataAsZeros"
+
+# Plot heatmap
+PLOTHEATMAP="plotHeatmap --plotFileFormat pdf --legendLocation upper-right --zMax 30"
+
+# HOMER motifs
+FINDMOTIFS="findMotifsGenome.pl -size 200 -p 12"
+
+# WhichTF
+WHICHTF="WhichTF"
+
+# TOBIAS
+CORRECT="TOBIAS ATACorrect --cores 12"
+FOOTPRINT="TOBIAS FootprintScores --cores 12"
+BINDETECT="TOBIAS BINDetect --cores 12"
